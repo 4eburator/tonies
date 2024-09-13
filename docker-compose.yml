@@ -52,6 +52,23 @@ services:
     depends_on:
       - tonies-opensearch-storage
 
+  tonies-spark-etl:
+    image: bitnami/spark:latest
+    container_name: tonies-spark-etl
+    environment:
+      - SPARK_MODE=driver
+#    entrypoint: ["/bin/bash", "/opt/spark-apps/start_etl.sh"]
+    volumes:
+      - ./etl:/opt/spark-apps
+    user: root
+    command:
+      - /bin/bash
+      - -c
+      - mkdir -p /var/lib/apt/lists/partial && apt-get update && apt-get install -y wget unzip && /opt/spark-apps/start_etl.sh
+    depends_on:
+      tonies-opensearch-storage:
+        condition: service_healthy
+
 volumes:
   dwh-data1:
 
