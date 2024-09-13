@@ -7,7 +7,9 @@ services:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
-      - DISABLE_SECURITY_PLUGIN=true
+#      - DISABLE_SECURITY_PLUGIN=true
+      - plugins.security.disabled=true
+#      - plugins.performance_analyzer.enabled=true
     ulimits:
       memlock:
         soft: -1
@@ -22,9 +24,9 @@ services:
       # OpenSearch Performance Analyzer plugin port
       - 9600:9600
 
-  opensearch-dashboards:
+  tonies-dashboards:
     image: opensearchproject/opensearch-dashboards:latest
-    container_name: opensearch-dashboards
+    container_name: tonies-dashboards
     ports:
       # default port for OpenSearch Dashboards
       - 5601:5601
@@ -34,9 +36,9 @@ services:
     depends_on:
       - tonies-opensearch-storage
 
-  data-loader:
+  tonies-data-loader:
     image: opensearchproject/opensearch:latest
-    container_name: data-loader
+    container_name: tonies-data-loader
     volumes:
       - ./data:/usr/share/opensearch/data_import
     entrypoint: /usr/share/opensearch/data_import/load_raw_data.sh
