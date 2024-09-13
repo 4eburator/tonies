@@ -2,9 +2,9 @@ version: '3'
 
 services:
 
-  opensearch-node1:
+  tonies-opensearch-storage:
     image: opensearchproject/opensearch:latest
-    container_name: opensearch-node1
+    container_name: tonies-opensearch-storage:
     environment:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
@@ -15,32 +15,36 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - opensearch-data1:/usr/share/opensearch/data
-      - ./data:/usr/share/opensearch/data_import  # Mount local data directory
+      - dwh-data1:/usr/share/opensearch/data
+      - ./data:/usr/share/opensearch/data_import
     ports:
+      # default port for OpenSearch HTTP
       - 9200:9200
+
+      # OpenSearch Performance Analyzer plugin port
       - 9600:9600
 
   opensearch-dashboards:
     image: opensearchproject/opensearch-dashboards:latest
     container_name: opensearch-dashboards
     ports:
+      # default port for OpenSearch Dashboards
       - 5601:5601
     environment:
-      - OPENSEARCH_HOSTS=http://opensearch-node1:9200
+      - OPENSEARCH_HOSTS=http://tonies-opensearch-storage::9200
       - DISABLE_SECURITY_DASHBOARDS_PLUGIN=true
     depends_on:
-      - opensearch-node1
+      - tonies-opensearch-storage
 
   data-loader:
     image: opensearchproject/opensearch:latest
     container_name: data-loader
     volumes:
-      - ./data:/usr/share/opensearch/data_import  # Mount local data directory
-    entrypoint: /usr/share/opensearch/data_import/load_data.sh
+      - ./data:/usr/share/opensearch/data_import
+    entrypoint: /usr/share/opensearch/data_import/load_raw_data.sh
     depends_on:
-      - opensearch-node1
+      - tonies-opensearch-storage
 
 volumes:
-  opensearch-data1:
+  dwh-data1:
 
