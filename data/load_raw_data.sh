@@ -1,20 +1,19 @@
 #!/bin/bash
 
-# Wait for OpenSearch to be available
-echo "Waiting for OpenSearch to start..."
-while ! curl -s http://opensearch-node1:9200 > /dev/null; do
+# Wait for Tonies OpenSearch service is up and running
+echo "Waiting for Tonies OpenSearch service to start..."
+while ! curl -s http://tonies-opensearch-storage:9200 > /dev/null; do
     sleep 1
 done
-echo "OpenSearch is up"
+echo "Tonies OpenSearch is up and running"
 
 # Ingest data using the Bulk API
-echo "Ingesting data..."
+echo "Ingesting raw data into DWH"
 for file in /usr/share/opensearch/data_import/*.json; do
     if [ -f "$file" ]; then
-        echo "Processing $file"
-        curl -s -H "Content-Type: application/x-ndjson" -XPOST "http://opensearch-node1:9200/_bulk" --data-binary "@$file"
+        echo "Ingesting file $file"
+        curl -s -H "Content-Type: application/x-ndjson" -XPOST "http://tonies-opensearch-storage:9200/_bulk" --data-binary "@$file"
     fi
 done
 
-echo "Data ingestion completed"
-
+echo "RAW Data ingestion is completed"
