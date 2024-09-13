@@ -1,0 +1,6 @@
+{ "index": { "_index": "toniebox-events", "_id": "1" } }
+{ "mac": "abcd1234", "timestamp": "2024-04-12T22:30:00.004", "tonie_id": "12345abcde", "event_id": 1234 }
+
+{ "index": { "_index": "toniebox-events", "_id": "2" } }
+{ "mac": "xyzx5678", "timestamp": "2024-04-12T23:11:01.004", "tonie_id": "12345aaaaz", "event_id": 1255 }
+
