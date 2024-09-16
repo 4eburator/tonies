@@ -11,6 +11,9 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 
+spark.sparkContext.setLogLevel("DEBUG")
+
+
 # Read events from OpenSearch
 df_events = spark.read \
     .format("org.elasticsearch.spark.sql") \

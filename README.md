@@ -2,9 +2,15 @@
 
 ### * Execution flow:
 
+
+* Build docker image for Spark Submit:
+
+  `docker build -t custom-spark-master:3.3.0 -f Dockerfile.spark_master .`
+  `docker compose build --no-cache`
+
 * Load raw test data
 
-    Test data load process is triggered by `docker-compose up` command. 
+    Test data load process is triggered by `docker compose up` command. 
 
 * Explore raw data in OpenSearch Dashboards
 

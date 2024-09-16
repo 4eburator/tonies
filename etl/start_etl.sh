@@ -9,7 +9,12 @@ echo "Downloading Elasticsearch-Hadoop connector JAR..."
 
 # wget -q https://repo1.maven.org/maven2/org/elasticsearch/elasticsearch-spark-30_2.12/7.17.1/elasticsearch-spark-30_2.12-7.17.1.jar -O /opt/spark-apps/elasticsearch-hadoop.jar
 
-wget -q https://repo1.maven.org/maven2/org/opensearch/client/opensearch-spark-30_2.12/1.2.0/opensearch-spark-30_2.12-1.2.0.jar -O /opt/spark-apps/elasticsearch-hadoop.jar
+# wget -q https://repo1.maven.org/maven2/org/opensearch/client/opensearch-spark-30_2.12/1.2.0/opensearch-spark-30_2.12-1.2.0.jar -O /opt/spark-apps/elasticsearch-hadoop.jar
+
+# wget -q https://repo1.maven.org/maven2/org/elasticsearch/elasticsearch-spark-30_2.13/8.15.1/elasticsearch-spark-30_2.13-8.15.1.jar -O /opt/spark-apps/elasticsearch-hadoop.jar
+
+
+wget -q https://repo1.maven.org/maven2/org/elasticsearch/elasticsearch-spark-30_2.12/8.15.1/elasticsearch-spark-30_2.12-8.15.1.jar -O /opt/spark-apps/elasticsearch-hadoop.jar
 
 
 
@@ -36,9 +41,14 @@ echo "JAR connector download is completed"
 
 # Run the ETL script with spark-submit
 echo "Starting Tonies ETL job..."
+# /opt/bitnami/spark/bin/spark-submit \
+#   --jars /opt/spark-apps/elasticsearch-hadoop.jar \
+#  /opt/spark-apps/tonies_etl.py
+
+
 /opt/bitnami/spark/bin/spark-submit \
-  --jars /opt/spark-apps/elasticsearch-hadoop.jar \
   /opt/spark-apps/tonies_etl.py
+
 
 echo "ETL job finished."
 
