@@ -54,6 +54,7 @@ services:
 
   tonies-spark-master:
     # image: bitnami/spark:3.3.0
+    # custom spark-master image is used in order to support curl and container healthcheck validation
     image: custom-spark-master:3.3.0
     container_name: tonies-spark-master
     environment:
@@ -88,24 +89,5 @@ services:
         condition: service_started
     restart: on-failure
 
-
-#  tonies-spark-etl:
-#    image: bitnami/spark:3.0.2-debian-10-r16
-#    container_name: tonies-spark-etl
-#    environment:
-#      - SPARK_MODE=driver
-##    entrypoint: ["/bin/bash", "/opt/spark-apps/start_etl.sh"]
-#    volumes:
-#      - ./etl:/opt/spark-apps
-#    user: root
-#    command:
-#      - /bin/bash
-#      - -c
-#      - mkdir -p /var/lib/apt/lists/partial && apt-get update && apt-get install -y wget unzip && /opt/spark-apps/start_etl.sh
-#    depends_on:
-#      tonies-opensearch-storage:
-#        condition: service_healthy
-
 volumes:
   dwh-data1:
-

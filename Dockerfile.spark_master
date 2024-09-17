@@ -1,4 +1,4 @@
-# Use the Bitnami Spark base image
+# Use the Bitnami Spark base image with support of 'curl'
 FROM bitnami/spark:3.3.0
 
 # Switch to root to install curl
