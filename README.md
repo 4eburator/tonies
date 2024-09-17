@@ -61,9 +61,28 @@ The implementation includes the following components and files:
    - `Dockerfile.spark_master`: Builds the Spark master image with additional health checks and `curl` support.
 
 ### 3. **ETL Job and Supporting Files**
-   - `etl/tonies_etl.py`: The PySpark ETL job that reads, transforms, and loads data using Apache Spark.
-   - `data/load_raw_data.sh`: A shell script executed by `tonies-data-loader` to ingest raw data.
-   - `data/test_data1.json`: Contains raw test data for ingestion and testing.
+- **File Structure:**
+  ```
+  ├── data
+  │   ├── load_raw_data.sh
+  │   ├── test_data1.json
+  ├── etl
+  │   ├── tonies_etl.py
+  ├── Dockerfile
+  ├── Dockerfile.spark_master
+  ├── docker-compose.yml
+  ├── README.md
+  ```
+  
+- **File Descriptions:**
+    - `etl/tonies_etl.py`: The PySpark ETL job that reads, transforms, and loads data using Apache Spark.
+    - `data/load_raw_data.sh`: A shell script executed by `tonies-data-loader` to ingest raw data into Open Search.
+    - `data/test_data1.json`: Contains raw test data for ingestion and testing the ETL pipeline.
+    - `Dockerfile`: Defines the custom Spark ETL environment, installing necessary dependencies and the Open Search connector.
+    - `Dockerfile.spark_master`: Builds the Spark master image with additional health checks and `curl` support.
+    - `docker-compose.yml`: The entry point for defining and running all services in the pipeline, including Open Search, Spark, and the ETL process.
+    - `README.md`: Documentation for the pipeline, providing build instructions, usage, and commands to run the pipeline.
+
 
 ### 4. **README.md**
    - Documentation for the pipeline, providing build instructions, usage, and commands to run the pipeline.
