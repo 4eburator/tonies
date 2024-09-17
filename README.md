@@ -1,5 +1,9 @@
 # Toniebox Data Pipeline Design Document
 
+## Author
+- **Name:** Vitalii Sigov
+- **Contact:** vsigov@yahoo.com
+
 ## Architecture
 
 The data pipeline architecture consists of the following components:
@@ -125,6 +129,7 @@ The implementation includes the following components and files:
 ### How will the data pipeline be monitored?
 - **Open Search Dashboards:** Used to monitor the ingestion process and explore raw and processed data.
 - **Spark Logs:** Set the Spark log level to 'INFO' to track job execution and monitor ETL transformations.
+- **Spark UI**: Where you can monitor the progress of jobs, view stages, and analyze task execution
 
 ### Which alerting mechanisms will be put in place?
 - **Health Checks:** Health checks for services (`tonies-spark-master` and `tonies-opensearch-storage`) are included 
@@ -141,11 +146,23 @@ The implementation includes the following components and files:
 
 ### What are potential risks and challenges?
 - **Data Completeness:** Ensuring all relevant events are captured and properly paired can be challenging, especially 
-  if events are missing or arrive out of order.
+  if events are missing or arrive out of order. Additionally, very long or unclosed sessions might indicate issues with 
+  data capturing, leading to incorrect or incomplete analysis of playback sessions
 - **Resource Limitations:** Running Spark locally within Docker may have resource limitations; scaling might require 
   moving to a cloud-based setup.
-- **Time Zone Handling:** Accurate time zone conversion is crucial to ensure consistency when calculating playbacks 
-  across different regions.
 - **Error Handling:** Robust error handling is needed to manage data discrepancies, such as missing stop events, 
   which can lead to incomplete playback sessions.
 
+## Implementation Problems
+
+### Known Issue: Spark to Open Search Connection Error
+- There is a known issue when Spark tries to connect to Open Search due to an incompatible connector jar. 
+  This causes an exception during the ETL job execution:
+```
+  tonies-spark-etl           | Caused by: org.elasticsearch.hadoop.EsHadoopIllegalStateException: Invalid major version [2.16.0]. Version is lower than minimum required version [6.x].
+  tonies-spark-etl           | 	at org.elasticsearch.hadoop.rest.RestClient.mainInfo(RestClient.java:770)
+  tonies-spark-etl           | 	at org.elasticsearch.hadoop.rest.InitializationUtils.discoverClusterInfo(InitializationUtils.java:393)
+  tonies-spark-etl           | 	... 25 more
+```
+  This issue is related to the Open Search connector jar being used and is currently a known problem that has 
+  not yet been fixed. A workaround or an updated connector jar might be needed to resolve this.
